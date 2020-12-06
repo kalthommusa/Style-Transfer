@@ -15,11 +15,22 @@ Style transfer is a computer vision technique that is used to create a stylized 
 
 ## How does Style Transfer work?
 
+In this paper, style transfer uses the features found in the 19-layer VGG Network, which is comprised of a series of convolutional and pooling layers, and a few fully-connected layers. In the image below, the convolutional layers are named by stack and their order in the stack. Conv_1_1 is the first convolutional layer that an image is passed through, in the first stack. Conv_2_1 is the first convolutional layer in the second stack. The deepest convolutional layer in the network is conv_5_4.
 
+![](readme-images/vgg19-architecture.png)
 
+The pre-trained VGG19 network is used as a feature extractor to extract content and style features from a passed in image.
+To get the content and style representations of an image, we have to pass an image forward throug the VGG19 network until we get to the desired layer(s) and then get the output from that layer.
 
+![](readme-images/content-image.png)
+![](readme-images/style-image.png)
 
+When implementing this algorithm, we define the content and the style losses and iterativly update the target image.
+The content loss will be the mean squared difference between the target and content features at layer conv4_2.
+The style loss is calculated in a similar way, only you have to iterate through a number of layers, specified by name in our dictionary style_weights.
+Then, the total loss will be calculated by adding up the style and content losses and weighting them with a specified alpha and beta.
 
+![](readme-images/total-loss.png)
 
 I used Google Colab with GPU device support to run this code. GPU hardware will accelerate the training process much faster than CPU hardware.
 
